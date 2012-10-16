@@ -22,6 +22,17 @@ public class TicTacToe implements ActionListener {
     JLabel winsCounter;
     JLabel losesConter;
     int emptySquaresLeft = 9;
+    
+    final int matrixWalker[][][] = {
+    		{ {0,0},{0,1},{0,2} }, // ряд 1
+    		{ {1,0},{1,1},{1,2} }, // ряд 2
+    		{ {2,0},{2,1},{2,2} }, // ряд 3
+    		{ {0,0},{1,0},{2,0} }, // столбец 1
+    		{ {0,1},{1,1},{2,1} }, // столбец 2
+    		{ {0,2},{1,2},{2,2} }, // столбец 3
+    		{ {0,0},{1,1},{2,2} }, // диагональ 1
+    		{ {0,2},{1,1},{2,0} }
+    };
 
     /**
      * Метод init() -- это конструктор апплета
@@ -186,70 +197,20 @@ public class TicTacToe implements ActionListener {
     		return "T"; // ничья (tie)
     	}
     	
-    	// Ряд 1 (элементы: 0:0,0:1,0:2)
-    	if (!squares[0][0].getText().equals("")
-    		&& squares[0][0].getText().equals(squares[0][1].getText())
-    		&& squares[0][0].getText().equals(squares[0][2].getText())) {
+    	for (int mw=0; mw<8; mw++) { // проверяются 8 строк matrixWalker (каждая откомментирована в объявлении)
     		
-    		theWinner = squares[0][0].getText();
-    		highlightWinner(0,0,0,1,0,2);
-    	
-    	// Ряд 2 (элементы: 1:0,1:1,1:2)
-    	} else if (!squares[1][0].getText().equals("")
-       		&& squares[1][0].getText().equals(squares[1][1].getText())
-       		&& squares[1][0].getText().equals(squares[1][2].getText())) {
-     
-    		theWinner = squares[1][0].getText();
-    		highlightWinner(1,0,1,1,1,2);
-    		
-    	// Ряд 3 (элементы: 2:0,2:1,2:2)
-    	} else if (!squares[2][0].getText().equals("")
-         	&& squares[2][0].getText().equals(squares[2][1].getText())
-           	&& squares[2][0].getText().equals(squares[2][2].getText())) {
-         
-        	theWinner = squares[2][0].getText();
-        	highlightWinner(2,0,2,1,2,2);
-        	
-        // Колонка 1 (элементы: 0:0,1:0,2:0)
-        } else if (!squares[0][0].getText().equals("")
-            && squares[0][0].getText().equals(squares[1][0].getText())
-            && squares[0][0].getText().equals(squares[2][0].getText())) {
-             
-            theWinner = squares[0][0].getText();
-            highlightWinner(0,0,1,0,2,0);
-
-        // Колонка 2 (элементы: 0:1,1:1,2:1)
-        } else if (!squares[0][1].getText().equals("")
-            && squares[0][1].getText().equals(squares[1][1].getText())
-            && squares[0][1].getText().equals(squares[2][1].getText())) {
-                 
-            theWinner = squares[0][1].getText();
-            highlightWinner(0,1,1,1,2,1);
-
-        // Колонка 3 (элементы: 0:2,1:2,2:2)
-        } else if (!squares[0][2].getText().equals("")
-            && squares[0][2].getText().equals(squares[1][2].getText())
-            && squares[0][2].getText().equals(squares[2][2].getText())) {
-                 
-            theWinner = squares[0][2].getText();
-            highlightWinner(0,2,1,2,2,2);
-        
-        // Диагональ 1 (элементы: 0:0,1:1,2:2)
-        } else if (!squares[0][0].getText().equals("")
-            && squares[0][0].getText().equals(squares[1][1].getText())
-            && squares[0][0].getText().equals(squares[2][2].getText())) {
-                         
-            theWinner = squares[0][0].getText();
-            highlightWinner(0,0,1,1,2,2);
-
-        // Диагональ 2 (элементы: 0:2,1;1,2:0)
-        } else if (!squares[0][2].getText().equals("")
-            && squares[0][2].getText().equals(squares[1][1].getText())
-            && squares[0][2].getText().equals(squares[2][0].getText())) {
-                         
-            theWinner = squares[0][2].getText();
-            highlightWinner(0,2,1,1,2,0);
-        }
+    		// 1й, 2й, 3й элементы строки, столбца или диагонали:
+    		String elem1 = squares[matrixWalker[mw][0][0]][matrixWalker[mw][0][1]].getText();
+    		String elem2 = squares[matrixWalker[mw][1][0]][matrixWalker[mw][1][1]].getText();
+    		String elem3 = squares[matrixWalker[mw][2][0]][matrixWalker[mw][2][1]].getText();
+    		if (!elem1.equals("") && elem1.equals(elem2) && elem1.equals(elem3)) {
+    			
+    			theWinner = squares[matrixWalker[mw][0][0]][matrixWalker[mw][0][1]].getText();
+    			highlightWinner(matrixWalker[mw][0][0], matrixWalker[mw][0][1],
+    							matrixWalker[mw][1][0], matrixWalker[mw][1][1],
+    							matrixWalker[mw][2][0], matrixWalker[mw][2][1]);
+    		}
+    	}
     	
     	return theWinner;
     }
@@ -313,110 +274,25 @@ public class TicTacToe implements ActionListener {
 
         int twoWeights = player.equals("O") ? -2 : 2;
 
-        // есть ли в ряду один две одинаковые клетки и одна пустая
-        if (weight[0][0] + weight[0][1] + weight[0][2] == twoWeights) {
-
-            if (weight[0][0] == 0) {
-            	res[0]=0;res[1]=0;
-            } else if (weight[0][1] == 0) {
-                res[0]=0;res[1]=1;
-            } else {
-                res[0]=0;res[1]=2;
-            }        
-            return res;
-        }
-        
-        // есть ли в ряду два две одинаковые клетки и одна пустая
-        if (weight[1][0] + weight[1][1] + weight[1][2] == twoWeights) {
-
-            if (weight[1][0] == 0) {
-                res[0]=1;res[1]=0;
-            } else if (weight[1][1] == 0) {
-                res[0]=1;res[1]=1;
-            } else {
-                res[0]=1;res[1]=2;
-            }
-            return res;
-        }
-        
-        // есть ли в ряду три две одинаковые клетки и одна пустая
-        if (weight[2][0] + weight[2][1] + weight[2][2] == twoWeights) {
-
-        	if (weight[2][0] == 0) {
-                res[0]=2;res[1]=0;
-            } else if (weight[2][1] == 0) {
-                res[0]=2;res[1]=1;
-            } else {
-                res[0]=2;res[1]=2;
-            }
-            return res;
-        }
-
-        // есть ли в колонке один две одинаковые клетки и одна пустая
-        if (weight[0][0] + weight[1][0] + weight[2][0] == twoWeights) {
-
-        	if (weight[0][0] == 0) {
-                res[0]=0;res[1]=0;
-            } else if (weight[1][0] == 0) {
-                res[0]=1;res[1]=0;
-            } else {
-                res[0]=2;res[1]=0;
-            }
-            return res;
-        }
-        // есть ли в колонке два две одинаковые клетки и одна пустая
-        if (weight[0][1] + weight[1][1] + weight[2][1] == twoWeights) {
-
-        	if (weight[0][1] == 0) {
-                res[0]=0;res[1]=1;
-            } else if (weight[1][1] == 0) {
-                res[0]=1;res[1]=1;
-            } else {
-                res[0]=2;res[1]=1;
-            }
-            return res;
-        }
-        // есть ли в колонке три две одинаковые клетки и одна пустая
-        if (weight[0][2] + weight[1][2] + weight[2][2] == twoWeights) {
-
-        	if (weight[0][2] == 0) {
-                res[0]=0;res[1]=2;
-            } else if (weight[1][2] == 0) {
-                res[0]=1;res[1]=2;
-            } else {
-                res[0]=2;res[1]=2;
-            }
-            return res;
-        }
-
-        // есть ли в первой диагонали две одинаковые клетки и одна пустая
-        if (weight[0][0] + weight[1][1] + weight[2][2] == twoWeights) {
-
-        	if (weight[0][0] == 0) {
-                res[0]=0;res[1]=0;
-            } else if (weight[1][1] == 0) {
-                res[0]=1;res[1]=1;
-            } else {
-                res[0]=2;res[1]=2;
-            }
-            return res;
-        }
-        // есть ли во второй диагонали две одинаковые клетки и одна пустая
-        if (weight[0][2] + weight[1][1] + weight[2][0] == twoWeights) {
-
-        	if (weight[0][2] == 0) {
-                res[0]=0;res[1]=2;
-            } else if (weight[1][1] == 0) {
-                res[0]=1;res[1]=1;
-            } else {
-                res[0]=2;res[1]=0;
-            }
-            return res;
-        }
+    	for (int mw=0; mw<8; mw++) { // проверяются 8 строк matrixWalker (каждая откомментирована в объявлении)
+    		
+    		// 1й, 2й, 3й элементы строки, столбца или диагонали:
+    		int elem1 = weight[matrixWalker[mw][0][0]][matrixWalker[mw][0][1]];
+    		int elem2 = weight[matrixWalker[mw][1][0]][matrixWalker[mw][1][1]];
+    		int elem3 = weight[matrixWalker[mw][2][0]][matrixWalker[mw][2][1]];
+    		if (elem1 + elem2 + elem3 == twoWeights) {
+    			
+    			if (elem1 == 0)
+    				return matrixWalker[mw][0];
+    			else if (elem2 == 0)
+    				return matrixWalker[mw][1];
+    			else
+    				return matrixWalker[mw][2];
+    		}
+    	}
         
         // не найдено двух одинаковых соседних клеток
-        res[0] = -1; res[1] = -1;
-        return res;
+        return new int[] {-1, -1};
     }
 
     int [] getRandomSquare() {
