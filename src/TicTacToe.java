@@ -31,7 +31,7 @@ public class TicTacToe implements ActionListener {
     		{ {0,1},{1,1},{2,1} }, // столбец 2
     		{ {0,2},{1,2},{2,2} }, // столбец 3
     		{ {0,0},{1,1},{2,2} }, // диагональ 1
-    		{ {0,2},{1,1},{2,0} }
+    		{ {0,2},{1,1},{2,0} }  // диагональ 2
     };
 
     /**
@@ -295,6 +295,10 @@ public class TicTacToe implements ActionListener {
         return new int[] {-1, -1};
     }
 
+    /**
+     * Этот метод выбирает случайную ячейку
+     * @return         массив с номером ячейки {i,j}
+     */ 
     int [] getRandomSquare() {
 
         boolean gotEmptySquare = false;
@@ -314,6 +318,10 @@ public class TicTacToe implements ActionListener {
         return res;
     }
 
+    /**
+     * этот метод подсвечивает выигравшие кнопки
+     * @param           три пары индексов двумерного массива buttons: i1,j1, i2,j2, i3,j3
+     */
     void highlightWinner(int win1i, int win1j, int win2i, int win2j, int win3i, int win3j) {
 
         squares[win1i][win1j].setBackground(Color.CYAN);
@@ -321,6 +329,9 @@ public class TicTacToe implements ActionListener {
         squares[win3i][win3j].setBackground(Color.CYAN);
     }
 
+    /**
+     * Этот метод активирует кнопку New Game и блокирует все кнопки
+     */
     void endTheGame() {
 
         newGameButton.setEnabled(true);
