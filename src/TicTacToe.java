@@ -409,10 +409,4 @@ public class TicTacToe extends Applet implements ActionListener {
             squares[i].setEnabled(false);
         }
     }
-    
-    public void main(String[] args) {
-    	
-    	this.init();
-    }
-    
 }
