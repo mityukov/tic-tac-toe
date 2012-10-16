@@ -1,4 +1,6 @@
 *.class
+*.applet
+bin/
 
 # Package Files #
 *.jar

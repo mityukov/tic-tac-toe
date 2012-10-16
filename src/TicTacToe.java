@@ -2,7 +2,6 @@
  * Игра "Крестики-Нолики" на доске 3x3
  */
 
-import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -11,12 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class TicTacToe extends Applet implements ActionListener {
+public class TicTacToe implements ActionListener {
 
-    JButton squares[];
+	JButton squares[];
     JButton newGameButton;
     JLabel score;
     JLabel winsCounter;
@@ -25,14 +25,17 @@ public class TicTacToe extends Applet implements ActionListener {
 
     /**
      * Метод init() -- это конструктор апплета
+     * => будет конструктором класса
      */
-    public void init() {
+    TicTacToe () {
         
+        JPanel windowContent = new JPanel();
+    	
         // менеджер расположения апплета, шрифт и цвет
-        this.setLayout(new BorderLayout());
-        this.setBackground(Color.CYAN);
+        windowContent.setLayout(new BorderLayout());
+        windowContent.setBackground(Color.CYAN);
         Font appletFont = new Font("Monospaced", Font.BOLD, 20);
-        this.setFont(appletFont);
+        windowContent.setFont(appletFont);
 
         // New game button:
         newGameButton = new JButton("New Game");
@@ -55,14 +58,14 @@ public class TicTacToe extends Applet implements ActionListener {
         scorePanel.add(losesConter);
         topPanel.add(scorePanel);
         
-        this.add(topPanel, "North");
+        windowContent.add(topPanel, "North");
         
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new GridLayout(3,3));
-        this.add(centerPanel, "Center");
+        windowContent.add(centerPanel, "Center");
 
         score = new JLabel("Your turn!");
-        this.add(score, "South");
+        windowContent.add(score, "South");
 
         // массив из 9 кнопок
         squares = new JButton[9];
@@ -73,7 +76,17 @@ public class TicTacToe extends Applet implements ActionListener {
             squares[i] = new JButton();
             squares[i].addActionListener(this);
             squares[i].setBackground(Color.ORANGE);
+            squares[i].setText(" "); // fix two narrow buttons
             centerPanel.add(squares[i]);
+        }
+        
+        JFrame frame = new JFrame();
+        frame.setContentPane(windowContent);
+        frame.pack();
+        frame.setVisible(true);
+        // fix two narrow buttons, step 2;
+        for (int i=0; i<9; i++) {
+            squares[i].setText("");
         }
     }
 
@@ -410,9 +423,9 @@ public class TicTacToe extends Applet implements ActionListener {
         }
     }
     
-    public void main(String[] args) {
+    public static void main(String[] args) {
     	
-    	this.init();
+    	TicTacToe theGame = new TicTacToe();
     }
     
 }
