@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 
 public class TicTacToe implements ActionListener {
 
-	JButton squares[];
+    JButton squares[];
     JButton newGameButton;
     JLabel score;
     JLabel winsCounter;
@@ -31,7 +31,7 @@ public class TicTacToe implements ActionListener {
         
         JPanel windowContent = new JPanel();
     	
-        // менеджер расположения апплета, шрифт и цвет
+        // разметка окна, шрифт и цвет
         windowContent.setLayout(new BorderLayout());
         windowContent.setBackground(Color.CYAN);
         Font appletFont = new Font("Monospaced", Font.BOLD, 20);
@@ -76,7 +76,7 @@ public class TicTacToe implements ActionListener {
             squares[i] = new JButton();
             squares[i].addActionListener(this);
             squares[i].setBackground(Color.ORANGE);
-            squares[i].setText(" "); // fix two narrow buttons
+            squares[i].setText(" "); // fix too narrow buttons
             centerPanel.add(squares[i]);
         }
         
@@ -84,7 +84,7 @@ public class TicTacToe implements ActionListener {
         frame.setContentPane(windowContent);
         frame.pack();
         frame.setVisible(true);
-        // fix two narrow buttons, step 2;
+        // fix too narrow buttons, step 2;
         for (int i=0; i<9; i++) {
             squares[i].setText("");
         }
